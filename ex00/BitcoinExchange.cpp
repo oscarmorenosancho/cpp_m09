@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/12 13:24:18 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/12 13:32:22 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void BitcoinExchange::split_line_to_map(const std::string& s, char c,
 		std::string tail;
 		head = s.substr(0, pos);
 		tail = s.substr(pos, len - pos);
-		const std::tm	date = cast_date(head);
+		std::tm	date = cast_date(head);
 		float	amount  = cast_amount(tail);
-		dst.emplace(date);
-		dst[date] = amount;
+		std::pair<std::tm, float> p(date, amount);
+		dst.insert(p);
 	}
 }
 
