@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/11 13:22:43 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:38:30 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ private:
 	int				LoadInput();
 	std::map<std::tm, float> dataMap;
 	std::map<std::tm, float> inputMap;
+	void split_line_to_map(const std::string& s, char c,
+		std::map<std::tm, float>& dst);
+	std::tm	cast_date(const std::string& s);
+	float	cast_amount(const std::string& s);
+	
 public:
 	BitcoinExchange(const char *inputFile);
 	~BitcoinExchange();
