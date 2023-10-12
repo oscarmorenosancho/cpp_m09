@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/11 11:29:55 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/12 10:45:44 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,12 +22,11 @@ MAINOBJ		:= $(addprefix $(BUILD_PATH), $(MAINSRC:.cpp=.o))
 MAINDEPS	:= $(addprefix $(BUILD_PATH), $(MAINSRC:.cpp=.d))
 CLASSOBJ	:= $(addprefix $(BUILD_PATH), $(CLASSSRC:.cpp=.o))
 CLASSDEPS	:= $(addprefix $(BUILD_PATH), $(CLASSSRC:.cpp=.d))
-
 HEADER		:= $(CLASSSRC:.cpp=.hpp)
 
 CC			:=	c++
 RM			:=	@rm -Rf
-CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic
+CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic -g
 
 folder_create 	= $(shell mkdir -p $(1))
 
