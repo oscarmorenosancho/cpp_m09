@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:07:36 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:04:00 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define _BITCOINEXCHANGE_HPP_
 # define DATA_CSV "data.csv"
 # define ERR_OPEN_FAIL "could not open file."
-# define ERR_BAD_INPUT "Error: bad input => "
-# define ERR_NOT_POSITIVE "Error: not a positive number."
-# define ERR_TOO_LARGE "Error: too large a number."
+# define ERR_BAD_INPUT "bad input =>"
+# define ERR_NOT_POSITIVE "not a positive number."
+# define ERR_TOO_LARGE "too large a number."
+# define ERR_EMPTY_DATA "Empty conversion database."
 # include <iostream>
 # include <fstream>
 # include <string>
@@ -51,16 +52,20 @@ std::ostream& operator<<(std::ostream& os, const Date& d);
 class BitcoinExchange
 {
 private:
+	std::map<Date, float> dataMap;
 	std::bad_cast badCastError;
+	std::runtime_error notPositiveError;
+	std::runtime_error tooLargeError;
 	const char		*inputFile;
 	int				LoadData();
-	int				LoadInput();
-	std::map<Date, float> dataMap;
-	std::map<Date, float> inputMap;
+	int				LoadInputAndConvert();
+	std::pair<Date, float>& splitLineToPair(const std::string& s,
+		char c, bool restrictive);
 	void splitLineToMap(const std::string& s, char c,
-		std::map<Date, float>& dst);
+		std::map<Date, float>& dst, bool restrictive);
+	void splitLineAndConvert(const std::string& s);
 	Date	castDate(const std::string& s);
-	float	castAmount(const std::string& s);
+	float	castAmount(const std::string& s, bool restrictive);
 public:
 	BitcoinExchange(const char *inputFile);
 	~BitcoinExchange();

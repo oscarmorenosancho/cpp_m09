@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:14:40 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/15 15:25:59 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,16 @@ std::ostream& operator<<(std::ostream& os, const Date& d)
 }
 
 BitcoinExchange::BitcoinExchange(const char *inputFile) :
-	badCastError(), inputFile(inputFile)
+	badCastError(),
+	notPositiveError(ERR_NOT_POSITIVE),
+	tooLargeError(ERR_TOO_LARGE),
+	inputFile(inputFile)
 {
 	if (!inputFile)
 		logError(ERR_OPEN_FAIL, NULL);
-	if (LoadInput())
-		return ;
 	if (LoadData())
+		return ;
+	if (LoadInputAndConvert())
 		return ;
 }
 
@@ -137,14 +140,16 @@ int	BitcoinExchange::LoadData()
 	while(std::getline(dataFile, line))
 	{
 		if (cnt > 0)
-			splitLineToMap(line, ',', dataMap);
+			splitLineToMap(line, ',', dataMap, false);
 		cnt++;
 	}
 	dataFile.close();
+	if (dataMap.size() < 1)
+		return (logError(ERR_EMPTY_DATA, NULL));
 	return (0);
 }
 
-int	BitcoinExchange::LoadInput()
+int	BitcoinExchange::LoadInputAndConvert()
 {
 	int cnt = 0;
 	std::string line;
@@ -155,15 +160,15 @@ int	BitcoinExchange::LoadInput()
 	while(std::getline(dataFile, line))
 	{
 		if (cnt > 0)
-			splitLineToMap(line, '|', inputMap);
+			splitLineAndConvert(line);
 		cnt++;
 	}
 	dataFile.close();
 	return (0);
 }
 
-void BitcoinExchange::splitLineToMap(const std::string& s, char c,
-	std::map<Date, float>& dst)
+std::pair<Date, float>& BitcoinExchange::splitLineToPair(const std::string& s,
+	char c, bool restrictive)
 {
 	std::string::size_type pos = s.find(c);
 	std::string::size_type len = s.length();
@@ -172,18 +177,60 @@ void BitcoinExchange::splitLineToMap(const std::string& s, char c,
 		std::string tail;
 		head = s.substr(0, pos);
 		tail = s.substr(pos + 1, len - pos);
-		try
+		Date date = castDate(head);
+		float amount  = castAmount(tail, restrictive);
+		return (*new std::pair<Date, float>(date, amount));
+	}
+	throw badCastError;
+}
+
+
+void BitcoinExchange::splitLineToMap(const std::string& s, char c,
+	std::map<Date, float>& dst, bool restrictive)
+{
+	try
+	{
+		std::pair<Date, float>&p  = splitLineToPair(s, c, restrictive);
+		dst.insert(p);
+	}
+	catch(const std::bad_cast& e)
+	{
+		logError(ERR_BAD_INPUT, s.c_str());
+	}
+	catch(const std::exception& e)
+	{
+		logError(e.what(), NULL);
+	}
+}
+
+void BitcoinExchange::splitLineAndConvert(const std::string& s)
+{
+	try
+	{
+		std::pair<Date, float>&p  = splitLineToPair(s, '|', true);
+		std::map<Date, float>::iterator found = dataMap.upper_bound(p.first);
+		std::cout << p.first << " => ";
+		std::cout << std::fixed << std::setprecision(2);
+		std::cout << p.second << " = ";
+		if (found == dataMap.begin())
 		{
-			Date date = castDate(head);
-			float amount  = castAmount(tail);
-			std::pair<Date, float> p(date, amount);
-			dst.insert(p);
-		}
-		catch(const std::exception& e)
-		{
-			std::cerr << e.what() << std::endl;
+			std::cout << "0, before the first data registerd.";
+			std::cout << std::endl;
 			return ;
 		}
+		found--;
+		std::cout << std::fixed << std::setprecision(2);
+		std::cout << p.second * found->second;
+		std::cout << std::endl;
+		return ;
+	}
+	catch(const std::bad_cast& e)
+	{
+		logError(ERR_BAD_INPUT, s.c_str());
+	}
+	catch(const std::exception& e)
+	{
+		logError(e.what(), NULL);
 	}
 }
 
@@ -193,45 +240,35 @@ Date	BitcoinExchange::castDate(const std::string& s)
 	return (dateValue);
 }
 
-float	BitcoinExchange::castAmount(const std::string& s)
+float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 {
-	int   amountIntValue;
-	float amountFloatValue;
-	bool	intCastFail = false;
-	bool	floatCastFail =false;
-
-	try
+	if (s.find_first_of(".eEfF")==std::string::npos)
 	{
-		amountIntValue = stoi(s);
+		int amountIntValue;
+		try
+		{
+			amountIntValue = stoi(s);
+		}
+		catch(const std::out_of_range& e)
+		{
+			throw tooLargeError;
+		}
+		if (restrictive && amountIntValue < 0)
+			throw notPositiveError;
+		if (restrictive && amountIntValue > 1000)
+			throw tooLargeError;
+		return (static_cast<float>(amountIntValue));
 	}
-	catch(const std::exception& e)
-	{
-		intCastFail = true;
-	}
-	try
-	{
-		amountFloatValue = stof(s);
-	}
-	catch(const std::exception& e)
-	{
-		floatCastFail = true;
-		if (!intCastFail)
-			amountFloatValue = static_cast<float>(amountIntValue);
-	}
-	if (intCastFail && floatCastFail)
-	{
-		logError(ERR_BAD_INPUT, s.c_str());
-		throw badCastError;
-	}
-	return (amountFloatValue);
+	else
+		return (stof(s));
 }
 
 std::ostream& BitcoinExchange::print(std::ostream& os) const
 {
 	// os << "Date | Value" << std::endl;
 	// os << inputMap;
-	os << "Date | Value" << std::endl;
-	os << dataMap;
+	// os << "Date | Value" << std::endl;
+	// os << dataMap;
 	return (os);
 }
 
