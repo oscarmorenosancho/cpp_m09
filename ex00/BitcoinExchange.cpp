@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/15 15:25:59 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/15 16:11:28 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,20 @@ BitcoinExchange::~BitcoinExchange()
 {
 }
 
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& b) :
+	badCastError(b.badCastError),
+	notPositiveError(b.notPositiveError),
+	tooLargeError(b.tooLargeError)
+{
+	this->dataMap = b.dataMap;
+}
+
+BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& b)
+{
+	this->dataMap = b.dataMap;
+	return (*this);
+}
+
 int BitcoinExchange::logError(const char *msg, const char *msg2)
 {
 	std::cerr << "Error: ";
@@ -192,6 +206,7 @@ void BitcoinExchange::splitLineToMap(const std::string& s, char c,
 	{
 		std::pair<Date, float>&p  = splitLineToPair(s, c, restrictive);
 		dst.insert(p);
+		delete &p;
 	}
 	catch(const std::bad_cast& e)
 	{
@@ -209,9 +224,12 @@ void BitcoinExchange::splitLineAndConvert(const std::string& s)
 	{
 		std::pair<Date, float>&p  = splitLineToPair(s, '|', true);
 		std::map<Date, float>::iterator found = dataMap.upper_bound(p.first);
-		std::cout << p.first << " => ";
+		const Date d = p.first;
+		float f = p.second;
+		delete &p;
+		std::cout << d << " => ";
 		std::cout << std::fixed << std::setprecision(2);
-		std::cout << p.second << " = ";
+		std::cout << f << " = ";
 		if (found == dataMap.begin())
 		{
 			std::cout << "0, before the first data registerd.";
@@ -220,7 +238,7 @@ void BitcoinExchange::splitLineAndConvert(const std::string& s)
 		}
 		found--;
 		std::cout << std::fixed << std::setprecision(2);
-		std::cout << p.second * found->second;
+		std::cout << f * found->second;
 		std::cout << std::endl;
 		return ;
 	}
@@ -265,10 +283,8 @@ float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 
 std::ostream& BitcoinExchange::print(std::ostream& os) const
 {
-	// os << "Date | Value" << std::endl;
-	// os << inputMap;
-	// os << "Date | Value" << std::endl;
-	// os << dataMap;
+	os << "Date | Value" << std::endl;
+	os << dataMap;
 	return (os);
 }
 

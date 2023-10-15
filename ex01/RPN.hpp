@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 11:24:44 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/15 16:17:05 by omoreno-         ###   ########.fr       */
+/*   Created: 2023/10/15 15:30:51 by omoreno-          #+#    #+#             */
+/*   Updated: 2023/10/15 15:43:00 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <BitcoinExchange.hpp>
-
-int main(int argc, char const *argv[])
+#ifndef _RPN_HPP_
+# define  _RPN_HPP_
+class RPN : std::stack<char>
 {
-	if (argc != 2)
-		return (BitcoinExchange::logError(ERR_WRONG_ARG, NULL));
-	BitcoinExchange bEx(argv[1]);
-	return 0;
-	
-}
+private:
+public:
+	RPN(int argc, char const *argv[]);
+	~RPN();
+};
+
+#endif

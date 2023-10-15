@@ -6,13 +6,13 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/11 11:29:55 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/15 15:32:42 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME:= btc
+NAME:= RPN
 
-CLASSSRC	:=	BitcoinExchange.cpp
+CLASSSRC	:=	RPN.cpp
 
 MAINSRC		:=	main.cpp
 

@@ -6,18 +6,19 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/15 15:04:00 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/15 16:16:22 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _BITCOINEXCHANGE_HPP_
 # define _BITCOINEXCHANGE_HPP_
 # define DATA_CSV "data.csv"
+# define ERR_WRONG_ARG "needed an argument with a filename to input data."
 # define ERR_OPEN_FAIL "could not open file."
 # define ERR_BAD_INPUT "bad input =>"
 # define ERR_NOT_POSITIVE "not a positive number."
 # define ERR_TOO_LARGE "too large a number."
-# define ERR_EMPTY_DATA "Empty conversion database."
+# define ERR_EMPTY_DATA "empty conversion database."
 # include <iostream>
 # include <fstream>
 # include <string>
@@ -69,6 +70,8 @@ private:
 public:
 	BitcoinExchange(const char *inputFile);
 	~BitcoinExchange();
+	BitcoinExchange(const BitcoinExchange& b);
+	BitcoinExchange& operator=(const BitcoinExchange& b);
 	static int logError(const char *msg, const char *msg2);
 	std::ostream& print(std::ostream& os) const;
 };
