@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/16 22:39:33 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/16 23:21:34 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,24 @@
 
 int K = 2;
 
-void print_vector(std::vector<int> &A)
+void print_vector(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {
-	std::vector<int>::iterator it = A.begin();
-	std::vector<int>::iterator ite = A.end();
-	if (it != ite)
+	if (begin != end)
 	{
-		std::cout << *it;
-		it++;
+		std::cout << *begin;
+		begin++;
 	}
-	while(it != ite)
+	while(begin != end)
 	{
-		std::cout << ", " << *it;
-		it++;
+		std::cout << ", " << *begin;
+		begin++;
 	}
 	std::cout << std::endl;
 }
 
-std::vector<int>& copyOfRange(std::vector<int>& A, int from, int to)
+std::vector<int>& copyOfRange(std::vector<int>::iterator begin, std::vector<int>::iterator end)
 {
-	std::vector<int>::iterator it = A.begin();
-	std::vector<int>::iterator ite(it);
-	it += from;
-	ite += to;
-	return *new std::vector<int>(it,ite);
+	return *new std::vector<int>(begin,end);
 }
 
 void insertionSort(std::vector<int>& A, int p, int q) {
@@ -53,16 +47,16 @@ void insertionSort(std::vector<int>& A, int p, int q) {
         }
         A[j] = tempVal;
     }
-    std::vector<int>& temp = copyOfRange(A, p, q +1);
-	//print_vector(temp);
+    std::vector<int>& temp = copyOfRange(A.begin() + p, A.begin() + q +1);
+	print_vector(temp.begin(), temp.end());
 	delete &temp;
 }
 
 void merge(std::vector<int>& A, int p, int q, int r) {
     int n1 = q - p + 1;
     int n2 = r - q;
-    std::vector<int>& LA = copyOfRange(A, p, q +1);
-    std::vector<int>& RA = copyOfRange(A, q+1, r +1);
+    std::vector<int>& LA = copyOfRange(A.begin() + p, A.begin() + q +1);
+    std::vector<int>& RA = copyOfRange(A.begin() + q+1, A.begin() + r +1);
     int RIDX = 0;
     int LIDX = 0;
     for (int i = p; i < r - p + 1; i++) {
@@ -99,9 +93,9 @@ int main(int argc, char **argv)
 {
 	std::vector<int> A = { 2, 5, 1, 6, 7, 3, 8, 4, 9 };
 	std::cout << "at the begining: ";
-	print_vector(A);
+	print_vector(A.begin(), A.end());
 	sort(A, 0, A.size() - 1);
 	std::cout << "at the end: ";
-	print_vector(A);
+	print_vector(A.begin(), A.end());
 	return (0);
 }
