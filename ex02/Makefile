@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/17 00:29:24 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/17 00:39:48 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ fclean : clean
 	@echo "Cleaned executable"
 
 reference: reference.cpp
-	${CC} reference.cpp -o reference
+	${CC} ${CFLAGS} reference.cpp -o reference
 
 cleanref:
 	$(RM) ./reference

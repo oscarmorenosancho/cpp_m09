@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/17 00:21:45 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/17 00:51:15 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,13 @@ void print_vector(Iterator begin, Iterator end)
 	std::cout << std::endl;
 }
 
-template <class Container, class Iterator>
+template <class Iterator, class Container>
 Container& copyOfRange(Iterator begin, Iterator end)
 {
 	return *new Container(begin,end);
 }
 
-template <class Iterator,
-	class Container = typename std::iterator_traits<Iterator>::value_type>
+template <class Iterator, class Container>
 void insertionSort(Container& A, int p, int q)
 {
 	for (int i = p; i < q; i++)
@@ -53,21 +52,20 @@ void insertionSort(Container& A, int p, int q)
 		}
 		A[j] = tempVal;
 	}
-	Container& temp = copyOfRange<Container, Iterator>
+	Container& temp = copyOfRange<Iterator, Container>
 						((A.begin() + p), (A.begin() + q + 1));
 	print_vector(temp.begin(), temp.end());
 	delete &temp;
 }
 
-template <class Iterator,
-	class Container = typename std::iterator_traits<Iterator>::value_type>
+template <class Iterator, class Container>
 void merge(Container& A, int p, int q, int r)
 {
 	int n1 = q - p + 1;
 	int n2 = r - q;
-	Container& LA = copyOfRange<Container, Iterator>
+	Container& LA = copyOfRange<Iterator, Container>
 								((A.begin() + p), (A.begin() + q + 1));
-	Container& RA = copyOfRange<Container, Iterator>
+	Container& RA = copyOfRange<Iterator, Container>
 								((A.begin() + q + 1), (A.begin() + r + 1));
 	int RIDX = 0;
 	int LIDX = 0;
@@ -90,7 +88,7 @@ void merge(Container& A, int p, int q, int r)
 	delete &RA;
 }
 
-template <class Iterator, class Container = typename std::iterator_traits<Iterator>::value_type>
+template <class Iterator, class Container>
 void sort(Container& A, int p, int r) {
 	if (r - p > K) {
 		int q = (p + r) / 2;
@@ -108,8 +106,9 @@ int main(int argc, char **argv)
 	(void)argv;
 	int arrInt[] = { 2, 5, 1, 6, 7, 3, 8, 4, 9 };
 	std::vector<int> A;
-	for (unsigned int i = 0; i < sizeof(arrInt); i++)
-		A.push_back(arrInt[i]);
+	unsigned int len = sizeof(arrInt)/sizeof(int);
+	for (unsigned int i = 0; i < len; i++)
+	 	A.push_back(arrInt[i]);
 	std::cout << "at the begining: ";
 	print_vector(A.begin(), A.end());
 	sort<std::vector<int>::iterator>(A, 0, A.size() - 1);
