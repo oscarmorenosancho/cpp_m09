@@ -6,21 +6,44 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 15:30:47 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/15 17:37:35 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/16 20:48:22 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <RPN.hpp>
+#include <sstream>
 
-RPN::RPN(int argc, char const *argv[]):
-	invalidArgument(ERR_INVAL_ARG),
-	tooFewOperands(ERR_TOO_FEW_OP)
+void RPN::iterSplit(const std::string & s)
 {
-	for (int i = 1 ; i < argc; i++)
-	{
-		takeArgument (argv[i]);
-		print(std::cout);
-	}
+    std::istringstream buf(s);
+	std::string token;
+
+	while (getline(buf, token,' '))
+		takeToken(token);
+}
+
+int RPN::stoi(const std::string & s)
+{
+    int i;
+    std::istringstream(s) >> i;
+    return i;
+}
+
+template<typename T>
+std::string RPN::to_string(const T & value)
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
+RPN::RPN(const char *arg):
+	invalidArgument(ERR_INVAL_ARG),
+	tooFewOperands(ERR_TOO_FEW_OP),
+	divisionByZero(ERR_DIV_BY_0)
+{
+	iterSplit(std::string(arg));
+	print(std::cout);
 }
 
 RPN::~RPN()
@@ -28,8 +51,10 @@ RPN::~RPN()
 }
 
 RPN::RPN(const RPN& b):
+	stack<std::string>(),
 	invalidArgument(ERR_INVAL_ARG),
-	tooFewOperands(ERR_TOO_FEW_OP)
+	tooFewOperands(ERR_TOO_FEW_OP),
+	divisionByZero(ERR_DIV_BY_0)
 {
 	(void)b;
 }
@@ -40,29 +65,34 @@ RPN& RPN::operator=(const RPN& b)
 	return (*this);
 }
 
-void RPN::takeArgument(const char *arg)
+int	RPN::topToOp()
 {
-	std::string strArg(arg);
-	if (strArg.length() != 1)
+	int Op = stoi(top());
+	pop();
+	return (Op); 
+}
+
+void RPN::takeToken(const std::string& token)
+{
+	if (token.length() < 1)
+		return ;
+	if (token.length() > 1)
 		throw invalidArgument;
-	if (strArg.find_first_of("0123456789") != std::string::npos)
-		return (push (strArg));
-	if (strArg.find_first_of("+-*/") != std::string::npos)
+	if (token.find_first_of("0123456789") != std::string::npos)
+		return (push (token));
+	if (token.find_first_of("+-*/") != std::string::npos)
 	{
-		char operation = strArg[0];
+		char operation = token[0];
 		int aOp;
 		int bOp;
 		if ((this->size() < 2 && (operation == '*' || operation == '/'))
 			|| (this->size() < 1 && (operation == '+' || operation == '-')))
 			throw tooFewOperands;
-		if (this->size() > 1)
-		{
-			bOp = stoi(top());
-			pop();
-		}
-		aOp = stoi(top());
-		pop();
-		if (this->size() > 1)
+		bool binOper = (this->size() > 1);
+		if (binOper)
+			bOp = topToOp();
+		aOp = topToOp();
+		if (binOper)
 			return (binaryOperation(aOp, bOp, operation));
 		return (unaryOperation(aOp, operation));
 	}
@@ -74,10 +104,10 @@ void RPN::unaryOperation(int aOp, char operation)
 	switch (operation)
 	{
 	case '+':
-		push(std::to_string(aOp));
+		push(to_string(aOp));
 		break;
 	case '-':
-		push(std::to_string(-aOp));
+		push(to_string(-aOp));
 		break;
 default:
 		throw invalidArgument;
@@ -90,16 +120,18 @@ void RPN::binaryOperation(int aOp, int bOp, char operation)
 	switch (operation)
 	{
 	case '+':
-		push(std::to_string(aOp + bOp));
+		push(to_string(aOp + bOp));
 		break;
 	case '-':
-		push(std::to_string(aOp - bOp));
+		push(to_string(aOp - bOp));
 		break;
 	case '*':
-		push(std::to_string(aOp * bOp));
+		push(to_string(aOp * bOp));
 		break;
 	case '/':
-		push(std::to_string(aOp / bOp));
+		if (bOp == 0)
+			throw divisionByZero;
+		push(to_string(aOp / bOp));
 		break;
 	default:
 		throw invalidArgument;

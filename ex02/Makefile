@@ -6,13 +6,13 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/11 11:29:55 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/16 22:43:40 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME:= btc
+NAME:= PmergeMe
 
-CLASSSRC	:=	BitcoinExchange.cpp
+CLASSSRC	:=	PmergeMe.cpp
 
 MAINSRC		:=	main.cpp
 
@@ -50,6 +50,13 @@ clean :
 fclean : clean
 	$(RM) $(NAME)
 	@echo "Cleaned executable"
+
+reference: reference.cpp
+	g++ reference.cpp -o reference
+
+cleanref:
+	$(RM) ./reference
+.PHONY : cleanref
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/15 15:32:42 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/16 18:03:00 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ HEADER		:= $(CLASSSRC:.cpp=.hpp)
 
 CC			:=	c++
 RM			:=	@rm -Rf
-CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic
+CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic -g
 
 folder_create 	= $(shell mkdir -p $(1))
 

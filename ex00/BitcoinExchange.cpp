@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/15 16:11:28 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/16 17:52:19 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 #include <iomanip>
 #include <sstream>
 #include <algorithm>
+#include <cstring>
+#include <string>
+#include <stdlib.h>
+#include <sstream>
 
 Date::Date(std::string s) : badInputError()
 {
 	struct tm	tm;
-	memset( &tm, 0, sizeof(tm));
+	std::memset( &tm, 0, sizeof(tm));
     if(strptime(s.c_str(), "%Y-%m-%d", &tm) == NULL)
 	{
 		BitcoinExchange::logError(ERR_BAD_INPUT, s.c_str());
@@ -263,16 +267,12 @@ float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 	if (s.find_first_of(".eEfF")==std::string::npos)
 	{
 		int amountIntValue;
-		try
-		{
-			amountIntValue = stoi(s);
-		}
-		catch(const std::out_of_range& e)
-		{
-			throw tooLargeError;
-		}
-		if (restrictive && amountIntValue < 0)
+		long int amountLongValue = stol(s);
+		if (restrictive && amountLongValue < 0)
 			throw notPositiveError;
+		amountIntValue = static_cast<int>(amountLongValue);
+		if (amountIntValue != amountLongValue)
+			throw tooLargeError;
 		if (restrictive && amountIntValue > 1000)
 			throw tooLargeError;
 		return (static_cast<float>(amountIntValue));
@@ -286,6 +286,28 @@ std::ostream& BitcoinExchange::print(std::ostream& os) const
 	os << "Date | Value" << std::endl;
 	os << dataMap;
 	return (os);
+}
+
+int BitcoinExchange::stol(const std::string & s )
+{
+    int i;
+    std::istringstream(s) >> i;
+    return i;
+}
+
+float BitcoinExchange::stof(const std::string & s)
+{
+    float i;
+    std::istringstream(s) >> i;
+    return i;
+}
+
+template<typename T>
+std::string BitcoinExchange::to_string(const T & value)
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
 }
 
 std::ostream& operator<<(std::ostream& os, const std::pair<Date, float>& d)
@@ -307,6 +329,7 @@ std::ostream& operator<<(std::ostream& os, const std::map<Date, float>& d)
 	}
 	return (os);
 }
+
 
 std::ostream& operator<<(std::ostream& os, const BitcoinExchange& d)
 {

@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/15 16:16:22 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/16 17:51:54 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <ctime>
 # include <map>
 # include <exception>
+# include <typeinfo> //for linux
 
 class Date
 {
@@ -67,6 +68,10 @@ private:
 	void splitLineAndConvert(const std::string& s);
 	Date	castDate(const std::string& s);
 	float	castAmount(const std::string& s, bool restrictive);
+	static int stol(const std::string & s);
+	static float stof(const std::string & s);
+	template<typename T>
+	static std::string to_string(const T & value);
 public:
 	BitcoinExchange(const char *inputFile);
 	~BitcoinExchange();
