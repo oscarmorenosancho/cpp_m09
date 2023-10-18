@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/17 00:39:48 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/18 21:17:29 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,10 @@ reference: reference.cpp
 cleanref:
 	$(RM) ./reference
 .PHONY : cleanref
+
+test:
+	./reference `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
+.PHONY : test
 
 re: fclean all
 
