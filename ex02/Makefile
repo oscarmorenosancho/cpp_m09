@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/18 21:17:29 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/18 22:21:35 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ HEADER		:= $(CLASSSRC:.cpp=.hpp)
 
 CC			:=	c++
 RM			:=	@rm -Rf
-CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic
+CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic -g
 
 folder_create 	= $(shell mkdir -p $(1))
 
@@ -54,12 +54,16 @@ fclean : clean
 reference: reference.cpp
 	${CC} ${CFLAGS} reference.cpp -o reference
 
+reference2: reference2.cpp
+	${CC} ${CFLAGS} reference2.cpp -o reference2
+
 cleanref:
 	$(RM) ./reference
+	$(RM) ./reference2
 .PHONY : cleanref
 
 test:
-	./reference `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
+	./reference2 `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
 .PHONY : test
 
 re: fclean all
