@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:37:21 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 18:09:31 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:28:09 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <list>
 #include <iostream>
 #include <PmergeMe.hpp>
-
 
 MyList::MyList()
 {
@@ -24,9 +23,9 @@ MyList::~MyList()
 {
 }
 
-MyList& MyList::sort()
+std::list<int>& MyList::sort()
 {
-	MyList& sorted = ::sort<MyList::iterator>(*this, K);
+	std::list<int>& sorted = ::sort<std::list<int>::iterator>(*(std::list<int>*)(this), K);
 	return (sorted);
 }
 
@@ -43,9 +42,9 @@ MyVector::~MyVector()
 {
 }
 
-MyVector& MyVector::sort()
+std::vector<int>& MyVector::sort()
 {
-	MyVector& sorted = ::sort<MyVector::iterator>(*this, K);
+	std::vector<int>& sorted = ::sort<std::vector<int>::iterator>(*(std::vector<int>*)this, K);
 	return (sorted);
 }
 

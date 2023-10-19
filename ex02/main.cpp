@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:30:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 18:06:07 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:46:45 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ int main(int argc, char **argv)
 	std::cout << "at the begining: ";
 	vec.print();
 	{
-		MyVector& res = vec.sort();
+		std::vector<int>& res = vec.sort();
 		delete &vec;
 		std::cout << "at the end: ";
 		print_range(res.begin(), res.end());
 		delete &res;
 	}
 	{
-		MyList& res = lst.sort();
+		std::list<int>& res = lst.sort();
 		delete &res;
 	}
 	return (0);

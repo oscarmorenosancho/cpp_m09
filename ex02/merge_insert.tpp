@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:45:02 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 18:07:14 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:37:44 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ Container& sort(Container& unsorted, unsigned int K)
 			middle++;
 		Container& lA = *new Container(unsorted.begin(), middle);
 		Container& rA = *new Container(middle, unsorted.end());
-		Container& sortedL = sort<Iterator>(lA);
+		Container& sortedL = sort<Iterator>(lA, K);
 		delete &lA;
-		Container& sortedR = sort<Iterator>(rA);
+		Container& sortedR = sort<Iterator>(rA, K);
 		delete &rA;
 		Container& ret = merge<Iterator>(sortedL, sortedR);
 		delete &sortedL;

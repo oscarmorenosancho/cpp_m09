@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:37:16 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 18:01:39 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 18:28:21 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ private:
 	static unsigned int K;
 public:
 	MyList();
-	~MyList();
-	MyList& sort();
+	virtual ~MyList();
+	std::list<int>& sort();
 	void print();
 };
 
@@ -31,8 +31,8 @@ private:
 	static unsigned int K;
 public:
 	MyVector();
-	~MyVector();
-	MyVector& sort();
+	virtual ~MyVector();
+	std::vector<int>& sort();
 	void print();
 };
 
