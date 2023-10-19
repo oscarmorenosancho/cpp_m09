@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 13:10:11 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 16:51:30 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int K = 2;
 
 template <class Iterator>
-void print_vector(Iterator begin, Iterator end)
+void print_range(Iterator begin, Iterator end)
 {
 	if (begin != end)
 	{
@@ -101,9 +101,9 @@ int main(int argc, char **argv)
 		col.push_back(temp);
 	}
 	std::cout << "at the begining: ";
-	print_vector(col.begin(), col.end());
+	print_range(col.begin(), col.end());
 	sort<std::vector<int>::iterator>(col, 0, col.size() - 1);
 	std::cout << "at the end: ";
-	print_vector(col.begin(), col.end());
+	print_range(col.begin(), col.end());
 	return (0);
 }

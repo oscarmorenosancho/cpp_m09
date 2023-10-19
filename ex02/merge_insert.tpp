@@ -1,22 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reference2.cpp                                     :+:      :+:    :+:   */
+/*   merge_insert.tpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 16:51:30 by omoreno-         ###   ########.fr       */
+/*   Created: 2023/10/19 15:45:02 by omoreno-          #+#    #+#             */
+/*   Updated: 2023/10/19 18:07:14 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string>
-#include <vector>
-#include <list>
-#include <algorithm>
-#include <iostream>
-
-int K = 2;
+#include <merge_insert.hpp>
 
 template <class Iterator>
 void print_range(Iterator begin, Iterator end)
@@ -85,9 +79,9 @@ Container& merge(Container& lA, Container& rA)
 }
 
 template <class Iterator, class Container>
-Container& sort(Container& unsorted)
+Container& sort(Container& unsorted, unsigned int K)
 {
-	if (unsorted.size() > (unsigned int)K)
+	if (unsorted.size() > K)
 	{
 		int q = unsorted.size() / 2;
 		Iterator middle = unsorted.begin();
@@ -109,22 +103,4 @@ Container& sort(Container& unsorted)
 		Container& ret = insertionSort<Iterator>(unsorted);
 		return (ret);
 	}
-}
-
-int main(int argc, char **argv)
-{
-	std::list<int>& col = *new std::list<int>();
-	for (int i = 1; i < argc; i++)
-	{
-		int temp = std::atoi(argv[i]);
-		col.push_back(temp);
-	}
-	std::cout << "at the begining: ";
-	print_range(col.begin(), col.end());
-	std::list<int>& res = sort<std::list<int>::iterator>(col);
-	delete &col;
-	std::cout << "at the end: ";
-	print_range(res.begin(), res.end());
-	delete &res;
-	return (0);
 }

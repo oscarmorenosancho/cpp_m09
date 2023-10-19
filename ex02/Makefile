@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/19 10:09:59 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/19 18:15:21 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,10 +47,6 @@ clean :
 	@echo "Cleaning $(BUILD_PATH) ..."
 	$(RM) $(BUILD_PATH)
 
-fclean : clean
-	$(RM) $(NAME)
-	@echo "Cleaned executable"
-
 reference: reference.cpp
 	${CC} ${CFLAGS} reference.cpp -o reference
 
@@ -61,6 +57,10 @@ cleanref:
 	$(RM) ./reference
 	$(RM) ./reference2
 .PHONY : cleanref
+
+fclean : clean  cleanref
+	$(RM) $(NAME)
+	@echo "Cleaned executable"
 
 test:
 	./reference `jot -r 3000 1 100000 | tr '\n' ' '`
