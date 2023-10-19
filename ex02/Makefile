@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/18 22:21:35 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/19 10:09:59 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,8 +63,14 @@ cleanref:
 .PHONY : cleanref
 
 test:
-	./reference2 `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
+	./reference `jot -r 3000 1 100000 | tr '\n' ' '`
+#./reference `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
 .PHONY : test
+
+test2:
+	./reference2 `jot -r 3000 1 100000 | tr '\n' ' '`
+#./reference2 `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
+.PHONY : test2
 
 re: fclean all
 

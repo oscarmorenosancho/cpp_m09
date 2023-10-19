@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/18 20:51:33 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:30:28 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,117 +41,67 @@ Container& copyOfRange(Iterator begin, Iterator end)
 }
 
 template <class Iterator, class Container>
-void insertionSort(Container& A, int p, int q)
+void insertionSort(Container& col, int p, int q)
 {
-	// std::cout << "\t\tA before insertion sort: ";
-	// print_vector(A.begin(), A.end());
 	for (int i = p; i < q; i++)
 	{
-		int tempVal = A[i + 1];
+		int tempVal = col[i + 1];
 		int j = i + 1;
-		while (j > p && A[j - 1] > tempVal) {
-			A[j] = A[j - 1];
+		while (j > p && col[j - 1] > tempVal) {
+			col[j] = col[j - 1];
 			j--;
 		}
-		A[j] = tempVal;
+		col[j] = tempVal;
 	}
-	// std::cout << "\t\tA after insertion sort: ";
-	// print_vector(A.begin(), A.end());
-	// Container& temp = copyOfRange<Iterator, Container>
-	// 					((A.begin() + p), (A.begin() + q + 1));
-	// std::cout << "\t\ttemp after insertion sort: ";
-	// print_vector(temp.begin(), temp.end());
-	// delete &temp;
 }
 
 template <class Iterator, class Container>
-void merge(Container& A, int p, int q, int r)
+void merge(Container& col, int p, int q, int r)
 {
 	int n1 = q - p + 1;
 	int n2 = r - q;
-	Container& LA = copyOfRange<Iterator, Container>
-								((A.begin() + p), (A.begin() + q + 1));
-	Container& RA = copyOfRange<Iterator, Container>
-								((A.begin() + q + 1), (A.begin() + r + 1));
-	// std::cout << "\tmerging\n";
-	// std::cout << "\tLA: ";
-	// print_vector(LA.begin(), LA.end());
-	// std::cout << "\tRA: ";
-	// print_vector(RA.begin(), RA.end());
-	int RIDX = 0;
-	int LIDX = 0;
-	// std::cout << "\tfrom p: " << p << " to r: " << r << "\n";
-	for (int i = p; i < r + 1; i++) {
-		if (RIDX == n2)
-		{
-			// std::cout << "i: " << i << "/ R reach end: " << n2 << ", copy LA["<< LIDX << "] with " << LA[LIDX] << " to A[" << i << "]\n";
-			A[i] = LA[LIDX];
-			LIDX++;
-		}
-		else if (LIDX == n1)
-		{
-			// std::cout << "i: " << i << "/ L reach end: " << n1 << ", copy RA["<< RIDX << "] with " << RA[RIDX] << " to A[" << i << "]\n";
-			A[i] = RA[RIDX];
-			RIDX++;
-		}
-		else if (RA[RIDX] > LA[LIDX])
-		{
-			// std::cout << "i: " << i << "/ RA["<< RIDX << "] with " << RA[RIDX] << " > LA[" << LIDX << "] with " << LA[LIDX] << " copy LA[inx] to A[" << i << "] \n";
-			A[i] = LA[LIDX];
-			LIDX++;
-		}
+	Container& LA = *new Container((col.begin() + p), (col.begin() + q + 1));
+	Container& RA = *new Container((col.begin() + q + 1), (col.begin() + r + 1));
+	int lI = 0;
+	int rI = 0;
+	for (int i = p; i < r + 1; i++)
+	{
+		if (rI == n2)
+			col[i] = LA[lI++];
+		else if (lI == n1)
+			col[i] = RA[rI++];
+		else if (RA[rI] > LA[lI])
+			col[i] = LA[lI++];
 		else
-		{
-			// std::cout << "i: " << i << "/ RA["<< RIDX << "] with " << RA[RIDX] << " < LA[" << LIDX << "] with " << LA[LIDX] << " copy RA[inx] to A[" << i << "] \n";
-			A[i] = RA[RIDX];
-			RIDX++;
-		}
+			col[i] = RA[rI++];
 	}
 	delete &LA;
 	delete &RA;
-	// std::cout << "\tA after merge : ";
-	// print_vector(A.begin() + p, A.begin() + r + 1);
 }
 
 template <class Iterator, class Container>
-void sort(Container& A, int p, int r) {
+void sort(Container& col, int p, int r) {
 	if (r - p > K) {
-		// std::cout << "A before sort-merge: ";
-		// print_vector(A.begin() + p, A.begin() + r + 1);
 		int q = (p + r) / 2;
-		sort<Iterator>(A, p, q);
-		sort<Iterator>(A, q + 1, r);
-		merge<Iterator>(A, p, q, r);
-		// std::cout << "A after: sort-merge ";
-		// print_vector(A.begin() + p, A.begin() + r + 1);
-	} else {
-		// std::cout << "A before insert sort: ";
-		// print_vector(A.begin() + p, A.begin() + r + 1);
-		insertionSort<Iterator>(A, p, r);
-		// std::cout << "A after insert sort: ";
-		// print_vector(A.begin() + p, A.begin() + r + 1);
-	}
+		sort<Iterator>(col, p, q);
+		sort<Iterator>(col, q + 1, r);
+		merge<Iterator>(col, p, q, r);
+	} else
+		insertionSort<Iterator>(col, p, r);
 }
 
 int main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-	// int arrInt[] = { 10, 2, 5, 1, 6, 7, 3, 8, 4, 9, 12, 15, 11, 16, 17, 13, 18, 14, 19};
-	// std::vector<int> A;
-	// unsigned int len = sizeof(arrInt)/sizeof(int);
-	// for (unsigned int i = 0; i < len; i++)
-	//  	A.push_back(arrInt[i]);
-	std::vector<int> A;
+	std::vector<int> col;
 	for (int i = 1; i < argc; i++)
 	{
 		int temp = std::atoi(argv[i]);
-		A.push_back(temp);
+		col.push_back(temp);
 	}
 	std::cout << "at the begining: ";
-	print_vector(A.begin(), A.end());
-	sort<std::vector<int>::iterator>(A, 0, A.size() - 1);
+	print_vector(col.begin(), col.end());
+	sort<std::vector<int>::iterator>(col, 0, col.size() - 1);
 	std::cout << "at the end: ";
-	print_vector(A.begin(), A.end());
+	print_vector(col.begin(), col.end());
 	return (0);
 }
