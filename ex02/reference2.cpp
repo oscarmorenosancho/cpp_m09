@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 11:25:27 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:24:08 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,22 @@ Container& insertionSort(const Container& unsorted)
 	Container& ret = *new Container(unsorted.begin(), unsorted.end());
 	for (int i = p; i < q - 1; i++)
 	{
-		int tempVal = ret[i + 1];
-		int j = i + 1;
-		while (j > p && ret[j - 1] > tempVal)
+		int tempVal;
 		{
-			ret[j] = ret[j - 1];
-			j--;
+			std::vector<int>::iterator it = ret.begin() + i + 1;
+			tempVal = *it;
 		}
-		ret[j] = tempVal;
+		int j = i + 1;
+		Iterator itJ = ret.begin() + j;
+		Iterator itJdec = itJ - 1;
+		while (j > p && *itJdec > tempVal)
+		{
+			*itJ = *itJdec;
+			j--;
+			itJ = ret.begin() + j;
+			itJdec = itJ - 1;
+		}
+		*itJ = tempVal;
 	}
 	return (ret);
 }
@@ -78,12 +86,16 @@ Container& merge(const Container& lA, const Container& rA)
 }
 
 template <class Iterator, class Container>
-Container& sort(const Container& unsortedA)
+Container& sort(Container& unsorted)
 {
-	if (unsortedA.size() > (unsigned int)K) {
-		int q = unsortedA.size() / 2;
-		Container& lA = *new Container((unsortedA.begin()), (unsortedA.begin() + q));
-		Container& rA = *new Container((unsortedA.begin() + q ), unsortedA.end());
+	if (unsorted.size() > (unsigned int)K)
+	{
+		int q = unsorted.size() / 2;
+		Iterator middle = unsorted.begin();
+		for (int i=0; i < q; i++)
+			middle++;
+		Container& lA = *new Container(unsorted.begin(), middle);
+		Container& rA = *new Container(middle, unsorted.end());
 		Container& sortedL = sort<Iterator>(lA);
 		delete &lA;
 		Container& sortedR = sort<Iterator>(rA);
@@ -95,7 +107,7 @@ Container& sort(const Container& unsortedA)
 	}
 	else
 	{
-		Container& ret = insertionSort<Iterator>(unsortedA);
+		Container& ret = insertionSort<Iterator>(unsorted);
 		return (ret);
 	}
 }

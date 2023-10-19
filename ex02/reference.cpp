@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 11:30:28 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 13:10:11 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void insertionSort(Container& col, int p, int q)
 	{
 		int tempVal = col[i + 1];
 		int j = i + 1;
-		while (j > p && col[j - 1] > tempVal) {
+		while (j > p && col[j - 1] > tempVal)
+		{
 			col[j] = col[j - 1];
 			j--;
 		}
@@ -81,7 +82,8 @@ void merge(Container& col, int p, int q, int r)
 
 template <class Iterator, class Container>
 void sort(Container& col, int p, int r) {
-	if (r - p > K) {
+	if (r - p > K)
+	{
 		int q = (p + r) / 2;
 		sort<Iterator>(col, p, q);
 		sort<Iterator>(col, q + 1, r);
