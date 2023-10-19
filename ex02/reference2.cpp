@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 21:55:01 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/19 13:24:08 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/19 14:48:15 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,24 @@ void print_vector(Iterator begin, Iterator end)
 template <class Iterator, class Container>
 Container& insertionSort(const Container& unsorted)
 {
-	int p = 0;
 	int q = unsorted.size();
 	Container& ret = *new Container(unsorted.begin(), unsorted.end());
-	for (int i = p; i < q - 1; i++)
+	Iterator itI = ret.begin();
+	for (int i = 0; i < q - 1; i++, itI++)
 	{
-		int tempVal;
-		{
-			std::vector<int>::iterator it = ret.begin() + i + 1;
-			tempVal = *it;
-		}
 		int j = i + 1;
-		Iterator itJ = ret.begin() + j;
-		Iterator itJdec = itJ - 1;
-		while (j > p && *itJdec > tempVal)
+		Iterator itJ = itI;
+		itJ++;
+		int tempVal = *itJ;
+		Iterator itJdec = itJ;
+		itJdec--;
+		while (j > 0 && *itJdec > tempVal)
 		{
 			*itJ = *itJdec;
+			itJ--;
 			j--;
-			itJ = ret.begin() + j;
-			itJdec = itJ - 1;
+			itJdec = itJ;
+			itJdec--;
 		}
 		*itJ = tempVal;
 	}
@@ -63,24 +62,24 @@ Container& insertionSort(const Container& unsorted)
 }
 
 template <class Iterator, class Container>
-Container& merge(const Container& lA, const Container& rA)
+Container& merge(Container& lA, Container& rA)
 {
-	int lN = lA.size();
-	int rN = rA.size();
-	int total = lN + rN;
+	int totalSize = lA.size() + rA.size();
 	Container &ret = *new Container();
-	int rI = 0;
-	int lI = 0;
-	for (int i = 0; i < total; i++)
+	Iterator lIt = lA.begin();
+	Iterator rIt = rA.begin();
+	Iterator lEnd = lA.end();
+	Iterator rEnd = rA.end();
+	for (int i = 0; i < totalSize; i++)
 	{
-		if (rI == rN)
-			ret.push_back(lA[lI++]);
-		else if (lI == lN)
-			ret.push_back(rA[rI++]);
-		else if (rA[rI] > lA[lI])
-			ret.push_back(lA[lI++]);
+		if (rIt == rEnd)
+			ret.push_back(*(lIt++));
+		else if (lIt == lEnd)
+			ret.push_back(*(rIt++));
+		else if (*rIt > *lIt)
+			ret.push_back(*(lIt++));
 		else
-			ret.push_back(rA[rI++]);
+			ret.push_back(*(rIt++));
 	}
 	return (ret);
 }
@@ -114,7 +113,7 @@ Container& sort(Container& unsorted)
 
 int main(int argc, char **argv)
 {
-	std::vector<int>& col = *new std::vector<int>();
+	std::list<int>& col = *new std::list<int>();
 	for (int i = 1; i < argc; i++)
 	{
 		int temp = std::atoi(argv[i]);
@@ -122,7 +121,7 @@ int main(int argc, char **argv)
 	}
 	std::cout << "at the begining: ";
 	print_vector(col.begin(), col.end());
-	std::vector<int>& res = sort<std::vector<int>::iterator>(col);
+	std::list<int>& res = sort<std::list<int>::iterator>(col);
 	delete &col;
 	std::cout << "at the end: ";
 	print_vector(res.begin(), res.end());
