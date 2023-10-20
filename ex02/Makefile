@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/19 18:38:38 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/20 11:01:16 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,9 +39,9 @@ $(BUILD_PATH)%.o : %.cpp ${HEADER} Makefile | $$(call folder_create,$$(dir $$@))
 
 all : $(NAME)
 
-$(NAME) : ${MAINOBJ} ${CLASSOBJ} ${HEADER} Makefile
+$(NAME) : ${MAINOBJ} ${HEADER} Makefile
 	@echo "Linking" $@
-	${CC} ${CFLAGS} ${MAINOBJ} ${CLASSOBJ} -o $@
+	${CC} ${CFLAGS} ${MAINOBJ} -o $@
 
 clean :
 	@echo "Cleaning $(BUILD_PATH) ..."
