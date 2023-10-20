@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:30:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 13:25:12 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 18:53:43 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int main(int argc, char **argv)
 		}
 		catch(const std::exception& e)
 		{
+			delete &vec;
+			delete &lst;
 			std::cerr << RED"Error: "<< e.what() << std::endl << RESET;
 			return (EXIT_FAILURE);
 		}
