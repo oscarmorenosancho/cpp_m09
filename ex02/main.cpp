@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:30:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 13:02:55 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:16:18 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include <PmergeMe.hpp>
 #include <exception>
-#include <chrono>
-#include <ctime>
 #include <time.h> 
+#include <PmergeMe.hpp>
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -30,6 +28,7 @@
 #define MAGENTA "\033[35m"      /* Magenta */
 #define CYAN    "\033[36m"      /* Cyan */
 #define WHITE   "\033[37m"      /* White */
+#define BLOBS   50
 
 template<typename T>
 std::string toString(const T & value)
@@ -48,35 +47,6 @@ int stoi(const std::string & s)
 	if (iV != lV || ::toString<long>(lV) != s)
 		throw err_fail_to_conv;
     return (iV);
-}
-
-std::tm* get_timestamp()
-{
-	std::time_t now = std::time(0);
-	std::tm* timestamp = std::localtime(&now);
-	return (timestamp);
-}
-
-void	displayTimestamp( std::time_t t)
-{
-	std::tm* timestamp = std::localtime(&t);
-	std::cout << "[";
-	std::cout << std::setfill ('0')<< std::setw(4) ;
-	std::cout << timestamp->tm_year + 1900;
-	std::cout << std::setfill ('0')<< std::setw(2) ;
-	std::cout << (timestamp->tm_mon + 1);
-	std::cout << std::setfill ('0')<< std::setw(2) ;
-	std::cout << (timestamp->tm_mday);
-	std::cout << "_";
-	std::cout << std::setfill ('0')<< std::setw(2) ;
-	std::cout << timestamp->tm_hour;
-	std::cout << std::setfill ('0')<< std::setw(2) ;
-	std::cout << timestamp->tm_min;
-	std::cout << std::setfill ('0')<< std::setw(2) ;
-	std::cout << timestamp->tm_sec;
-	std::cout << "] ";
-	std::cout << t;
-	std::cout << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -101,7 +71,7 @@ int main(int argc, char **argv)
 	double sortVectorTime;
 	double sortListTime;
 	size_t size = vec.size();
-	int K = (size / 2);
+	int K = (size / BLOBS);
 	K = (K < 1) ? 1 : K;
 	std::cout << "Before: ";
 	PmergeMe::print_range<std::vector<int>::iterator>

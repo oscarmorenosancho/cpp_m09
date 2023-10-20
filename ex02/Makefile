@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/20 13:04:40 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/20 13:12:10 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ fclean : clean
 	@echo "Cleaned executable"
 
 test:
-	./PmergeMe `jot -r 50000 1 100000 | tr '\n' ' '`
+	./PmergeMe `jot -r 3000 1 100000 | tr '\n' ' '`
 #./PmergeMe `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
 .PHONY : test
 
