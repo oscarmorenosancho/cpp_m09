@@ -6,19 +6,16 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:37:21 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 12:02:25 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:23:48 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <PmergeMe.hpp>
 
-PmergeMe::PmergeMe()
-{
-}
-
-PmergeMe::~PmergeMe()
-{
-}
+PmergeMe::PmergeMe(){}
+PmergeMe::~PmergeMe(){}
+PmergeMe::PmergeMe(PmergeMe&){}
+PmergeMe& PmergeMe::operator=(PmergeMe&){return(*this);}
 
 template <class Iterator>
 void PmergeMe::print_range(Iterator begin, Iterator end)

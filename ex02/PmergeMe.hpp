@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:37:16 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 12:02:15 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:23:57 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ class PmergeMe
 private:
 	PmergeMe();
 	~PmergeMe();
+	PmergeMe(PmergeMe&);
+	PmergeMe& operator=(PmergeMe&);
 public:
 	template <class Iterator, class Container>
 	static Container& insertionSort(const Container& unsorted);

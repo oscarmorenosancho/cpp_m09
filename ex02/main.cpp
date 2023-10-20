@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:30:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 13:16:18 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:25:12 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,10 @@ int main(int argc, char **argv)
 	size_t size = vec.size();
 	int K = (size / BLOBS);
 	K = (K < 1) ? 1 : K;
-	std::cout << "Before: ";
+	std::cout << BLUE"Before: ";
 	PmergeMe::print_range<std::vector<int>::iterator>
 		(vec.begin(), vec.end());
+	std::cout << RESET;
 	{
 		clock_t start_time = clock();
 		std::vector<int>& res =	PmergeMe::sort<std::vector<int>::iterator>
@@ -83,9 +84,10 @@ int main(int argc, char **argv)
 		clock_t end_time = clock();
 		sortVectorTime = (end_time - start_time) * 1.0e6 / CLOCKS_PER_SEC;
 		delete &vec;
-		std::cout << "After: ";
+		std::cout << GREEN"After: ";
 		PmergeMe::print_range<std::vector<int>::iterator>
 			(res.begin(), res.end());
+		std::cout << RESET;
 		delete &res;
 	}
 	{
@@ -97,9 +99,10 @@ int main(int argc, char **argv)
 		delete &lst;
 		delete &res;
 	}
-	std::cout << "Time to process a range of " << size << " elements with std::vector : ";
+	std::cout << YELLOW"Time to process a range of " << size << " elements with std::vector : ";
 	std::cout << std::setprecision(17) << sortVectorTime << " us" << std::endl;
 	std::cout << "Time to process a range of " << size << " elements with std::list : ";
 	std::cout << std::setprecision(17) << sortListTime << " us" << std::endl;
+	std::cout << RESET;
 	return (EXIT_SUCCESS);
 }
