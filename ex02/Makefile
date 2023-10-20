@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/20 11:01:16 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/20 11:08:18 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,30 +47,14 @@ clean :
 	@echo "Cleaning $(BUILD_PATH) ..."
 	$(RM) $(BUILD_PATH)
 
-reference: reference.cpp
-	${CC} ${CFLAGS} reference.cpp -o reference
-
-reference2: reference2.cpp
-	${CC} ${CFLAGS} reference2.cpp -o reference2
-
-cleanref:
-	$(RM) ./reference
-	$(RM) ./reference2
-.PHONY : cleanref
-
-fclean : clean  cleanref
+fclean : clean
 	$(RM) $(NAME)
 	@echo "Cleaned executable"
 
 test:
 	./PmergeMe `jot -r 3000 1 100000 | tr '\n' ' '`
-#./reference `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
+#./PmergeMe `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
 .PHONY : test
-
-test2:
-	./reference2 `jot -r 3000 1 100000 | tr '\n' ' '`
-#./reference2 `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;
-.PHONY : test2
 
 re: fclean all
 
