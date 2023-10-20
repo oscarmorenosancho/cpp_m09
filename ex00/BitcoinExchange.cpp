@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/16 17:52:19 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 19:11:23 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,12 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& b)
 
 int BitcoinExchange::logError(const char *msg, const char *msg2)
 {
-	std::cerr << "Error: ";
+	std::cerr << RED"Error: ";
 	if (msg)
 		std::cerr << msg;
 	if (msg2)
 		std::cerr << " " << msg2;
-	std::cerr << std::endl;
+	std::cerr << RESET << std::endl;
 	return (1);
 }
 
