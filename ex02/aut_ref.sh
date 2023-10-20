@@ -1,1 +1,0 @@
-./reference `/usr/bin/shuf -i 1-1000 -n 500 | tr "\n" " "`;

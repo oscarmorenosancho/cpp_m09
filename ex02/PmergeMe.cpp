@@ -6,14 +6,22 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:37:21 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 10:47:08 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 12:02:25 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <PmergeMe.hpp>
 
+PmergeMe::PmergeMe()
+{
+}
+
+PmergeMe::~PmergeMe()
+{
+}
+
 template <class Iterator>
-void print_range(Iterator begin, Iterator end)
+void PmergeMe::print_range(Iterator begin, Iterator end)
 {
 	if (begin != end)
 	{
@@ -29,7 +37,7 @@ void print_range(Iterator begin, Iterator end)
 }
 
 template <class Iterator, class Container>
-Container& insertionSort(const Container& unsorted)
+Container& PmergeMe::insertionSort(const Container& unsorted)
 {
 	int q = unsorted.size();
 	Container& ret = *new Container(unsorted.begin(), unsorted.end());
@@ -56,7 +64,7 @@ Container& insertionSort(const Container& unsorted)
 }
 
 template <class Iterator, class Container>
-Container& merge(Container& lA, Container& rA)
+Container& PmergeMe::merge(Container& lA, Container& rA)
 {
 	int totalSize = lA.size() + rA.size();
 	Container &ret = *new Container();
@@ -79,7 +87,7 @@ Container& merge(Container& lA, Container& rA)
 }
 
 template <class Iterator, class Container>
-Container& sort(Container& unsorted, unsigned int K)
+Container& PmergeMe::sort(Container& unsorted, unsigned int K)
 {
 	if (unsorted.size() > K)
 	{
@@ -104,3 +112,4 @@ Container& sort(Container& unsorted, unsigned int K)
 		return (ret);
 	}
 }
+

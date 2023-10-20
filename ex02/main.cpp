@@ -6,14 +6,78 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:30:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 11:04:48 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:02:55 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <vector>
 #include <list>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <PmergeMe.hpp>
+#include <exception>
+#include <chrono>
+#include <ctime>
+#include <time.h> 
+
+#define RESET   "\033[0m"
+#define BLACK   "\033[30m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+#define GREEN   "\033[32m"      /* Green */
+#define YELLOW  "\033[33m"      /* Yellow */
+#define BLUE    "\033[34m"      /* Blue */
+#define MAGENTA "\033[35m"      /* Magenta */
+#define CYAN    "\033[36m"      /* Cyan */
+#define WHITE   "\033[37m"      /* White */
+
+template<typename T>
+std::string toString(const T & value)
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
+int stoi(const std::string & s)
+{
+	std::runtime_error err_fail_to_conv("fail to convert: " + s);
+    long lV;
+    std::istringstream(s) >> lV;
+	int iV = static_cast<int>(lV);
+	if (iV != lV || ::toString<long>(lV) != s)
+		throw err_fail_to_conv;
+    return (iV);
+}
+
+std::tm* get_timestamp()
+{
+	std::time_t now = std::time(0);
+	std::tm* timestamp = std::localtime(&now);
+	return (timestamp);
+}
+
+void	displayTimestamp( std::time_t t)
+{
+	std::tm* timestamp = std::localtime(&t);
+	std::cout << "[";
+	std::cout << std::setfill ('0')<< std::setw(4) ;
+	std::cout << timestamp->tm_year + 1900;
+	std::cout << std::setfill ('0')<< std::setw(2) ;
+	std::cout << (timestamp->tm_mon + 1);
+	std::cout << std::setfill ('0')<< std::setw(2) ;
+	std::cout << (timestamp->tm_mday);
+	std::cout << "_";
+	std::cout << std::setfill ('0')<< std::setw(2) ;
+	std::cout << timestamp->tm_hour;
+	std::cout << std::setfill ('0')<< std::setw(2) ;
+	std::cout << timestamp->tm_min;
+	std::cout << std::setfill ('0')<< std::setw(2) ;
+	std::cout << timestamp->tm_sec;
+	std::cout << "] ";
+	std::cout << t;
+	std::cout << std::endl;
+}
 
 int main(int argc, char **argv)
 {
@@ -21,23 +85,51 @@ int main(int argc, char **argv)
 	std::vector<int>& vec = *new std::vector<int>();
 	for (int i = 1; i < argc; i++)
 	{
-		int temp = std::atoi(argv[i]);
-		lst.push_back(temp);
-		vec.push_back(temp);
+		try
+		{
+			int temp = ::stoi(argv[i]);
+			lst.push_back(temp);
+			vec.push_back(temp);
+		}
+		catch(const std::exception& e)
+		{
+			std::cerr << RED"Error: "<< e.what() << std::endl << RESET;
+			return (EXIT_FAILURE);
+		}
+		
 	}
-	std::cout << "at the begining: ";
-	print_range<std::vector<int>::iterator>(vec.begin(), vec.end());
+	double sortVectorTime;
+	double sortListTime;
+	size_t size = vec.size();
+	int K = (size / 2);
+	K = (K < 1) ? 1 : K;
+	std::cout << "Before: ";
+	PmergeMe::print_range<std::vector<int>::iterator>
+		(vec.begin(), vec.end());
 	{
-		std::vector<int>& res = sort<std::vector<int>::iterator>(vec,2);
+		clock_t start_time = clock();
+		std::vector<int>& res =	PmergeMe::sort<std::vector<int>::iterator>
+			(vec, K);
+		clock_t end_time = clock();
+		sortVectorTime = (end_time - start_time) * 1.0e6 / CLOCKS_PER_SEC;
 		delete &vec;
-		std::cout << "at the end: ";
-		print_range<std::vector<int>::iterator>(res.begin(), res.end());
+		std::cout << "After: ";
+		PmergeMe::print_range<std::vector<int>::iterator>
+			(res.begin(), res.end());
 		delete &res;
 	}
 	{
-		std::list<int>& res = sort<std::list<int>::iterator>(lst, 2);
+		clock_t start_time = clock();
+		std::list<int>& res = PmergeMe::sort<std::list<int>::iterator>
+			(lst, K);
+		clock_t end_time = clock();
+		sortListTime = (end_time - start_time) * 1.0e6 / CLOCKS_PER_SEC;
 		delete &lst;
 		delete &res;
 	}
-	return (0);
+	std::cout << "Time to process a range of " << size << " elements with std::vector : ";
+	std::cout << std::setprecision(17) << sortVectorTime << " us" << std::endl;
+	std::cout << "Time to process a range of " << size << " elements with std::list : ";
+	std::cout << std::setprecision(17) << sortListTime << " us" << std::endl;
+	return (EXIT_SUCCESS);
 }
