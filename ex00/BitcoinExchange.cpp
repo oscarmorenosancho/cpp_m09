@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/22 16:39:16 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/22 21:04:46 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ std::ostream& operator<<(std::ostream& os, const Date& d)
 
 BitcoinExchange::BitcoinExchange(const char *inputFile) :
 	badCastError(),
+	invalidValueError(ERR_INV_VALUE),
 	notPositiveError(ERR_NOT_POSITIVE),
 	tooLargeError(ERR_TOO_LARGE),
 	inputFile(inputFile)
@@ -124,6 +125,7 @@ BitcoinExchange::~BitcoinExchange()
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange& b) :
 	badCastError(b.badCastError),
+	invalidValueError(b.invalidValueError),
 	notPositiveError(b.notPositiveError),
 	tooLargeError(b.tooLargeError)
 {
@@ -286,18 +288,27 @@ std::ostream& BitcoinExchange::print(std::ostream& os) const
 	return (os);
 }
 
-int BitcoinExchange::stol(const std::string & s )
+int BitcoinExchange::stol(const std::string& s)
 {
-    int i;
-    std::istringstream(s) >> i;
-    return i;
+	std::ostringstream oss;
+	long l;
+	std::istringstream(s) >> l;
+	std::string rev;
+	oss << l;
+	if (oss.str() != s)
+	{
+		std::cerr << "#" << oss.str() << "!=" << s << "!\n";
+		throw invalidValueError;
+	}
+	int i = static_cast<int>(l);
+	return i;
 }
 
-float BitcoinExchange::stof(const std::string & s)
+float BitcoinExchange::stof(const std::string& s)
 {
-    float	i;
-    std::istringstream(s) >> i;
-    return i;
+	float	i;
+	std::istringstream(s) >> i;
+	return i;
 }
 
 std::string BitcoinExchange::toString(const float& value)

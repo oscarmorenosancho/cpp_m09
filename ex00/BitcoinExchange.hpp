@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/22 15:39:41 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/22 20:28:28 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define ERR_BAD_INPUT "bad input =>"
 # define ERR_NOT_POSITIVE "not a positive number."
 # define ERR_TOO_LARGE "too large a number."
+# define ERR_INV_VALUE "invalid value."
 # define ERR_EMPTY_DATA "empty conversion database."
 # define RESET   "\033[0m"
 # define BLACK   "\033[30m"      /* Black */
@@ -65,6 +66,7 @@ class BitcoinExchange
 private:
 	std::map<Date, float> dataMap;
 	std::bad_cast badCastError;
+	std::runtime_error invalidValueError;
 	std::runtime_error notPositiveError;
 	std::runtime_error tooLargeError;
 	const char		*inputFile;
@@ -78,8 +80,8 @@ private:
 	Date	castDate(const std::string& s);
 	float	castAmount(const std::string& s, bool restrictive);
 public:
-	static int stol(const std::string & s);
-	static float stof(const std::string & s);
+	int stol(const std::string& s);
+	float stof(const std::string& s);
 	static std::string toString(const float& value);
 	BitcoinExchange(const char *inputFile);
 	~BitcoinExchange();
