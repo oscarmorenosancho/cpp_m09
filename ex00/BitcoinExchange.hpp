@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 19:10:40 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/22 15:39:41 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,10 @@ private:
 	void splitLineAndConvert(const std::string& s);
 	Date	castDate(const std::string& s);
 	float	castAmount(const std::string& s, bool restrictive);
+public:
 	static int stol(const std::string & s);
 	static float stof(const std::string & s);
-	template<typename T>
-	static std::string to_string(const T & value);
-public:
+	static std::string toString(const float& value);
 	BitcoinExchange(const char *inputFile);
 	~BitcoinExchange();
 	BitcoinExchange(const BitcoinExchange& b);

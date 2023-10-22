@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/20 19:11:23 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/22 16:39:16 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,8 +232,7 @@ void BitcoinExchange::splitLineAndConvert(const std::string& s)
 		float f = p.second;
 		delete &p;
 		std::cout << d << " => ";
-		std::cout << std::fixed << std::setprecision(2);
-		std::cout << f << " = ";
+		std::cout << toString(f) << " = ";
 		if (found == dataMap.begin())
 		{
 			std::cout << "0, before the first data registerd.";
@@ -241,8 +240,7 @@ void BitcoinExchange::splitLineAndConvert(const std::string& s)
 			return ;
 		}
 		found--;
-		std::cout << std::fixed << std::setprecision(2);
-		std::cout << f * found->second;
+		std::cout << toString(f * found->second);
 		std::cout << std::endl;
 		return ;
 	}
@@ -297,24 +295,34 @@ int BitcoinExchange::stol(const std::string & s )
 
 float BitcoinExchange::stof(const std::string & s)
 {
-    float i;
+    float	i;
     std::istringstream(s) >> i;
     return i;
 }
 
-template<typename T>
-std::string BitcoinExchange::to_string(const T & value)
+std::string BitcoinExchange::toString(const float& value)
 {
     std::ostringstream oss;
+	oss << std::fixed << std::setprecision(2);
     oss << value;
-    return oss.str();
+	std::string s = oss.str();
+	std::string::iterator it = s.begin();
+	std::string::iterator ite = s.end();
+	while (it != ite && *it!='.')
+		it++;
+	if (it == ite)
+		return s;
+	if (it[1]=='0' && it[2]=='0')
+		return (std::string(s.begin(), it));
+	if (it[1]!='0' && it[2]=='0')
+		return (std::string(s.begin(), it + 2));
+	return (std::string(s.begin(), it + 3));
 }
 
 std::ostream& operator<<(std::ostream& os, const std::pair<Date, float>& d)
 {
 	os << d.first << " | ";
-	os << std::fixed << std::setprecision(2);
-	os << d.second << std::endl;
+	os << BitcoinExchange::toString(d.second) << std::endl;
 	return (os);
 }
 
