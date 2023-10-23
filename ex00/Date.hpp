@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 10:12:32 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 10:39:09 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:18:47 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <string>
 # include <ctime>
 # include <map>
-# include <exception>
+# include <CustomExcepts.hpp>
 # include <LogError.hpp>
 
 class Date
@@ -27,8 +27,9 @@ private:
 	int month;
 	int day;
 	long int joined;
-	std::bad_cast badInputError;
+	InvalidValueError badInputError;
 public:
+	Date();
 	Date(std::string s);
 	~Date();
 	Date(const Date& b);

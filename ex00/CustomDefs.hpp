@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 10:31:51 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 12:47:21 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:33:08 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,5 @@
 # define ERR_INV_VALUE "invalid value."
 # define ERR_EMPTY_DATA "empty conversion database."
 # define ERR_BEFORE_1ST "0, before the first data registerd."
+# define ERR_ALREADY_CATCHED "already catched."
 #endif

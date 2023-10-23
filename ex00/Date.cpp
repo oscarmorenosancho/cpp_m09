@@ -6,22 +6,23 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 10:12:36 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 10:33:36 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:19:03 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <Date.hpp>
 #include <CustomDefs.hpp>
 
+Date::Date() : badInputError()
+{
+}
+
 Date::Date(std::string s) : badInputError()
 {
 	struct tm	tm;
 	std::memset( &tm, 0, sizeof(tm));
     if(strptime(s.c_str(), "%Y-%m-%d", &tm) == NULL)
-	{
-		LogError::print(ERR_BAD_INPUT, s.c_str());
 		throw badInputError;
-	}
 	year = 1900 + tm.tm_year;
 	month = 1 + tm.tm_mon;
 	day = tm.tm_mday;

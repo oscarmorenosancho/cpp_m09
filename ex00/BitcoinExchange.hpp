@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 12:48:16 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:34:09 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,20 @@
 # include <string>
 # include <ctime>
 # include <map>
-# include <exception>
 # include <typeinfo> //for linux
 # include <Date.hpp>
+# include <CustomExcepts.hpp>
 
 class BitcoinExchange
 {
 private:
 	std::map<Date, float> dataMap;
-	std::bad_cast badCastError;
-	std::runtime_error invalidValueError;
-	std::runtime_error notPositiveError;
-	std::runtime_error tooLargeError;
-	std::runtime_error csvLoadError;
+	std::bad_cast		badCastError;
+	InvalidValueError	invalidValueError;
+	NotPositiveError	notPositiveError;
+	TooLargeError		tooLargeError;
+	CsvLoadError		csvLoadError;
+	AlreadyCatchedError	alreadyCatchedError;
 	const char		*inputFile;
 	int				LoadData();
 	int				LoadInputAndConvert();

@@ -6,13 +6,17 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/23 10:50:26 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/23 14:42:53 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME:= btc
 
-CLASSSRC	:=	BitcoinExchange.cpp Date.cpp ScalarConverter.cpp LogError.cpp
+CLASSSRC	:=	BitcoinExchange.cpp \
+				Date.cpp \
+				ScalarConverter.cpp \
+				CustomExcepts.cpp \
+				LogError.cpp
 
 MAINSRC		:=	main.cpp
 

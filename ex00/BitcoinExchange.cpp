@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 13:36:45 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/23 15:45:57 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,6 @@
 
 BitcoinExchange::BitcoinExchange(const char *inputFile) :
 	badCastError(),
-	invalidValueError(ERR_INV_VALUE),
-	notPositiveError(ERR_NOT_POSITIVE),
-	tooLargeError(ERR_TOO_LARGE),
-	csvLoadError(ERR_DATA_CSV),
 	inputFile(inputFile)
 {
 	if (!inputFile)
@@ -43,11 +39,7 @@ BitcoinExchange::~BitcoinExchange()
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange& b) :
-	badCastError(b.badCastError),
-	invalidValueError(b.invalidValueError),
-	notPositiveError(b.notPositiveError),
-	tooLargeError(b.tooLargeError),
-	csvLoadError(b.csvLoadError)
+	badCastError(b.badCastError)
 {
 	this->dataMap = b.dataMap;
 }
@@ -111,15 +103,38 @@ std::pair<Date, float>& BitcoinExchange::splitLineToPair(const std::string& s,
 	if (pos != std::string::npos) {
 		std::string head;
 		std::string tail;
-		head = s.substr(0, pos);
+		head = ScalarConverter::trim(s.substr(0, pos));
 		tail = ScalarConverter::trim(s.substr(pos + 1, len - pos));
+		Date date;
 		if (tail.length() < 1)
 			throw invalidValueError;
-		Date date = castDate(head);
-		float amount  = castAmount(tail, restrictive);
+		try
+		{
+			date = castDate(head);
+		}
+		catch(const InvalidValueError& e)
+		{
+			LogError::print(e.what(), head.c_str());
+			throw alreadyCatchedError;
+		}
+		float amount;
+		try
+		{
+			amount  = castAmount(tail, restrictive);
+		}
+		catch(const std::bad_cast& e)
+		{
+			LogError::print(e.what(), tail.c_str());
+			throw alreadyCatchedError;
+		}
+		catch(const InvalidValueError& e)
+		{
+			LogError::print(e.what(), tail.c_str());
+			throw alreadyCatchedError;
+		}
 		return (*new std::pair<Date, float>(date, amount));
 	}
-	throw badCastError;
+	throw invalidValueError;
 }
 
 
@@ -128,11 +143,20 @@ void BitcoinExchange::splitLineToMap(const std::string& s, char c,
 {
 	try
 	{
-		std::pair<Date, float>&p  = splitLineToPair(s, c, restrictive);
+		std::pair<Date, float>&p = splitLineToPair(s, c, restrictive);
 		dst.insert(p);
 		delete &p;
 	}
+	catch(const AlreadyCatchedError& e)
+	{
+		throw csvLoadError;
+	}
 	catch(const std::bad_cast& e)
+	{
+		LogError::print(ERR_BAD_INPUT, s.c_str());
+		throw csvLoadError;
+	}
+	catch(const InvalidValueError& e)
 	{
 		LogError::print(ERR_BAD_INPUT, s.c_str());
 		throw csvLoadError;
@@ -167,6 +191,10 @@ void BitcoinExchange::splitLineAndConvert(const std::string& s)
 		std::cout << std::endl;
 		return ;
 	}
+	catch(const AlreadyCatchedError& e)
+	{
+		;
+	}
 	catch(const std::bad_cast& e)
 	{
 		LogError::print(ERR_BAD_INPUT, s.c_str());
@@ -191,12 +219,12 @@ float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 	case ScalarConverter::TYPE_LONG:
 		{
 			if (s.length()>10)
-				throw badCastError;
+				throw invalidValueError;
 			int amountIntValue;
 			long int amountLongValue = ScalarConverter::toLong(s);
 			amountIntValue = static_cast<int>(amountLongValue);
 			if (amountIntValue != amountLongValue)
-				throw badCastError;
+				throw invalidValueError;
 			ret = static_cast<float>(amountIntValue);
 		}
 		break;
@@ -207,10 +235,10 @@ float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 		ret = static_cast<float>(ScalarConverter::toDouble(s));
 		break;
 	default:
-		throw badCastError;
+		throw invalidValueError;
 	}
 	if (ret == INFINITY || ret == -INFINITY || ret == NAN || ret == -NAN)
-		throw badCastError;
+		throw invalidValueError;
 	if (restrictive && ret < 0.0)
 		throw notPositiveError;
 	if (restrictive && ret > 1000.0)
