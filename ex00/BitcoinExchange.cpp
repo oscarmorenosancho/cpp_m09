@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 13:21:57 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/23 13:36:45 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ Date	BitcoinExchange::castDate(const std::string& s)
 
 float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 {
+	float	ret = 0.0;
 	switch (ScalarConverter::identify(s))
 	{
 	case ScalarConverter::TYPE_LONG:
@@ -193,42 +194,28 @@ float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 				throw badCastError;
 			int amountIntValue;
 			long int amountLongValue = ScalarConverter::toLong(s);
-			if (restrictive && amountLongValue < 0)
-				throw notPositiveError;
 			amountIntValue = static_cast<int>(amountLongValue);
 			if (amountIntValue != amountLongValue)
 				throw badCastError;
-			if (restrictive && amountIntValue > 1000)
-				throw tooLargeError;
-			return (static_cast<float>(amountIntValue));
+			ret = static_cast<float>(amountIntValue);
 		}
+		break;
 	case ScalarConverter::TYPE_FLOAT:
-		{
-			float amountFloatValue = ScalarConverter::toFloat(s);
-			if (amountFloatValue == INFINITY || amountFloatValue == -INFINITY ||
-			amountFloatValue == NAN || amountFloatValue == -NAN)
-				throw badCastError;
-			if (restrictive && amountFloatValue < 0.0)
-				throw notPositiveError;
-			if (restrictive && amountFloatValue > 1000.0)
-				throw tooLargeError;
-			return (amountFloatValue);
-		}
+		ret = ScalarConverter::toFloat(s);
+		break;
 	case ScalarConverter::TYPE_DOUBLE:
-		{
-			float amountFloatValue = static_cast<float>(ScalarConverter::toDouble(s));
-			if (amountFloatValue == INFINITY || amountFloatValue == -INFINITY ||
-			amountFloatValue == NAN || amountFloatValue == -NAN)
-				throw badCastError;
-			if (restrictive && amountFloatValue < 0.0)
-				throw notPositiveError;
-			if (restrictive && amountFloatValue > 1000.0)
-				throw tooLargeError;
-			return (amountFloatValue);
-		}
+		ret = static_cast<float>(ScalarConverter::toDouble(s));
+		break;
 	default:
 		throw badCastError;
 	}
+	if (ret == INFINITY || ret == -INFINITY || ret == NAN || ret == -NAN)
+		throw badCastError;
+	if (restrictive && ret < 0.0)
+		throw notPositiveError;
+	if (restrictive && ret > 1000.0)
+		throw tooLargeError;
+	return (ret);
 }
 
 std::ostream& BitcoinExchange::print(std::ostream& os) const
