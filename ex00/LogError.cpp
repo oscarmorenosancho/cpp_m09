@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   LogError.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 11:24:44 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 10:40:17 by omoreno-         ###   ########.fr       */
+/*   Created: 2023/10/23 10:18:51 by omoreno-          #+#    #+#             */
+/*   Updated: 2023/10/23 10:41:47 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <BitcoinExchange.hpp>
+#include <LogError.hpp>
+#include <Colors.hpp>
 #include <CustomDefs.hpp>
 
-int main(int argc, char const *argv[])
+LogError::LogError(){}
+LogError::~LogError(){}
+LogError::LogError(const LogError&){}
+LogError& LogError::operator=(const LogError&){return (*this);}
+
+int	LogError::print(const char *msg, const char *msg2)
 {
-	if (argc != 2)
-		return (LogError::print(ERR_WRONG_ARG, NULL));
-	BitcoinExchange bEx(argv[1]);
-	return 0;
-	
+	std::cerr << RED"Error: ";
+	if (msg)
+		std::cerr << msg;
+	if (msg2)
+		std::cerr << " " << msg2;
+	std::cerr << RESET << std::endl;
+	return (1);
 }

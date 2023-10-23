@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   LogError.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 11:24:44 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 10:40:17 by omoreno-         ###   ########.fr       */
+/*   Created: 2023/10/23 10:18:28 by omoreno-          #+#    #+#             */
+/*   Updated: 2023/10/23 10:39:15 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <BitcoinExchange.hpp>
-#include <CustomDefs.hpp>
+#ifndef _LOGERROR_HPP_
+# define _LOGERROR_HPP_
+# include <iostream>
+# include <string>
 
-int main(int argc, char const *argv[])
+class LogError
 {
-	if (argc != 2)
-		return (LogError::print(ERR_WRONG_ARG, NULL));
-	BitcoinExchange bEx(argv[1]);
-	return 0;
-	
-}
+private:
+	LogError();
+	~LogError();
+	LogError(const LogError& b);
+	LogError& operator=(const LogError& b);
+public:
+	static int	print(const char *msg, const char *msg2);
+};
+
+#endif

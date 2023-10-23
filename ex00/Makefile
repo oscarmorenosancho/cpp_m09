@@ -6,13 +6,13 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/12 10:45:44 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/23 10:50:26 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME:= btc
 
-CLASSSRC	:=	BitcoinExchange.cpp
+CLASSSRC	:=	BitcoinExchange.cpp Date.cpp ScalarConverter.cpp LogError.cpp
 
 MAINSRC		:=	main.cpp
 
@@ -23,6 +23,7 @@ MAINDEPS	:= $(addprefix $(BUILD_PATH), $(MAINSRC:.cpp=.d))
 CLASSOBJ	:= $(addprefix $(BUILD_PATH), $(CLASSSRC:.cpp=.o))
 CLASSDEPS	:= $(addprefix $(BUILD_PATH), $(CLASSSRC:.cpp=.d))
 HEADER		:= $(CLASSSRC:.cpp=.hpp)
+HEADER		+= CustomDefs.hpp Colors.hpp 
 
 CC			:=	c++
 RM			:=	@rm -Rf
