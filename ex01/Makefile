@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/16 18:03:00 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/23 15:53:01 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ CLASSOBJ	:= $(addprefix $(BUILD_PATH), $(CLASSSRC:.cpp=.o))
 CLASSDEPS	:= $(addprefix $(BUILD_PATH), $(CLASSSRC:.cpp=.d))
 
 HEADER		:= $(CLASSSRC:.cpp=.hpp)
+HEADER		+= Colors.hpp
 
 CC			:=	c++
 RM			:=	@rm -Rf
