@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:59 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 15:34:09 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:45:25 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ private:
 	void splitLineAndConvert(const std::string& s);
 	Date	castDate(const std::string& s);
 	float	castAmount(const std::string& s, bool restrictive);
+	float	castLongAmount(const std::string& s, bool restrictive);
 public:
 	int stol(const std::string& s);
 	float stof(const std::string& s);

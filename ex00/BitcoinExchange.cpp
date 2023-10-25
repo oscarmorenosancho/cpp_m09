@@ -6,7 +6,7 @@
 /*   By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 11:25:22 by omoreno-          #+#    #+#             */
-/*   Updated: 2023/10/23 15:45:57 by omoreno-         ###   ########.fr       */
+/*   Updated: 2023/10/25 14:47:41 by omoreno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,22 +211,30 @@ Date	BitcoinExchange::castDate(const std::string& s)
 	return (dateValue);
 }
 
+float	BitcoinExchange::castLongAmount(const std::string& s, bool restrictive)
+{
+	if (s.length()>10)
+		throw invalidValueError;
+	int amountIntValue;
+	long int amountLongValue = ScalarConverter::toLong(s);
+	amountIntValue = static_cast<int>(amountLongValue);
+	if (amountIntValue != amountLongValue)
+		throw invalidValueError;
+	float ret = static_cast<float>(amountIntValue);
+	if (restrictive && ret < 0.0)
+		throw notPositiveError;
+	if (restrictive && ret > 1000.0)
+		throw tooLargeError;
+	return (ret);
+}
+
 float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 {
 	float	ret = 0.0;
 	switch (ScalarConverter::identify(s))
 	{
 	case ScalarConverter::TYPE_LONG:
-		{
-			if (s.length()>10)
-				throw invalidValueError;
-			int amountIntValue;
-			long int amountLongValue = ScalarConverter::toLong(s);
-			amountIntValue = static_cast<int>(amountLongValue);
-			if (amountIntValue != amountLongValue)
-				throw invalidValueError;
-			ret = static_cast<float>(amountIntValue);
-		}
+		ret = castLongAmount(s, restrictive);
 		break;
 	case ScalarConverter::TYPE_FLOAT:
 		ret = ScalarConverter::toFloat(s);
@@ -239,10 +247,6 @@ float	BitcoinExchange::castAmount(const std::string& s, bool restrictive)
 	}
 	if (ret == INFINITY || ret == -INFINITY || ret == NAN || ret == -NAN)
 		throw invalidValueError;
-	if (restrictive && ret < 0.0)
-		throw notPositiveError;
-	if (restrictive && ret > 1000.0)
-		throw tooLargeError;
 	return (ret);
 }
 
