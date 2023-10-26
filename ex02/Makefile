@@ -6,7 +6,7 @@
 #    By: omoreno- <omoreno-@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/22 16:22:46 by omoreno-          #+#    #+#              #
-#    Updated: 2023/10/23 13:26:41 by omoreno-         ###   ########.fr        #
+#    Updated: 2023/10/26 11:14:05 by omoreno-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,7 @@ HEADER		+= Colors.hpp
 
 CC			:=	c++
 RM			:=	@rm -Rf
-CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic -g
-
+CFLAGS		:=	-Wall -Werror -Wextra -std=c++98 -pedantic
 folder_create 	= $(shell mkdir -p $(1))
 
 .SECONDEXPANSION:
